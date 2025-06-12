@@ -2,8 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders values summary component', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText('Your Core Values')).toBeInTheDocument();
+  expect(screen.getByText('Achievement')).toBeInTheDocument();
+  expect(screen.getByText('Creativity')).toBeInTheDocument();
 });

@@ -1,24 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import ValuesSummary from './components/ValuesSummary';
 
 function App() {
+  // Sample data - replace this with actual data from your API
+  const sampleValues = [
+    {
+      name: "Achievement",
+      score: 95,
+      description: "Striving for excellence and accomplishment in all endeavors"
+    },
+    {
+      name: "Creativity",
+      score: 88,
+      description: "Expressing yourself through innovative and original ideas"
+    },
+    {
+      name: "Independence",
+      score: 85,
+      description: "Making decisions and taking actions based on your own judgment"
+    },
+    {
+      name: "Learning",
+      score: 82,
+      description: "Continuously acquiring new knowledge and skills"
+    },
+    {
+      name: "Balance",
+      score: 80,
+      description: "Maintaining harmony between different aspects of life"
+    }
+  ];
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ValuesSummary values={sampleValues} />
     </div>
   );
 }
