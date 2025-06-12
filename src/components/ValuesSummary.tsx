@@ -8,35 +8,6 @@ interface Value {
   description: string;
 }
 
-// Mock data for testing
-const mockValues: Value[] = [
-  {
-    name: "Achievement",
-    score: 95,
-    description: "Striving for excellence and accomplishment in all endeavors"
-  },
-  {
-    name: "Creativity",
-    score: 88,
-    description: "Expressing yourself through innovative and original ideas"
-  },
-  {
-    name: "Independence",
-    score: 85,
-    description: "Making decisions and taking actions based on your own judgment"
-  },
-  {
-    name: "Learning",
-    score: 82,
-    description: "Continuously acquiring new knowledge and skills"
-  },
-  {
-    name: "Balance",
-    score: 80,
-    description: "Maintaining harmony between different aspects of life"
-  }
-];
-
 const ValuesSummary: React.FC = () => {
   const { resultKey } = useParams<{ resultKey: string }>();
   const [values, setValues] = useState<Value[]>([]);
@@ -46,9 +17,12 @@ const ValuesSummary: React.FC = () => {
   useEffect(() => {
     const fetchValues = async () => {
       try {
-        // Simulate API call with mock data
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-        setValues(mockValues);
+        const response = await fetch(`https://api.personalvalu.es/results/${resultKey}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setValues(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
