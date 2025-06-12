@@ -1,6 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ValuesSummary from './ValuesSummary';
+
+// Mock the fetch function
+global.fetch = jest.fn();
 
 describe('ValuesSummary', () => {
   const mockValues = [
@@ -16,33 +20,124 @@ describe('ValuesSummary', () => {
     }
   ];
 
-  it('renders the component with title', () => {
-    render(<ValuesSummary values={mockValues} />);
-    expect(screen.getByText('Your Core Values')).toBeInTheDocument();
+  beforeEach(() => {
+    // Reset all mocks before each test
+    jest.clearAllMocks();
   });
 
-  it('displays values in correct order', () => {
-    render(<ValuesSummary values={mockValues} />);
-    const valueNames = screen.getAllByRole('heading', { level: 2 });
-    expect(valueNames[0]).toHaveTextContent('Achievement');
-    expect(valueNames[1]).toHaveTextContent('Creativity');
+  it('renders the component with title', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ values: mockValues })
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Your Core Values')).toBeInTheDocument();
+    });
   });
 
-  it('shows correct scores', () => {
-    render(<ValuesSummary values={mockValues} />);
-    expect(screen.getByText('95%')).toBeInTheDocument();
-    expect(screen.getByText('88%')).toBeInTheDocument();
+  it('displays values in correct order', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ values: mockValues })
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      const valueNames = screen.getAllByRole('heading', { level: 2 });
+      expect(valueNames[0]).toHaveTextContent('Achievement');
+      expect(valueNames[1]).toHaveTextContent('Creativity');
+    });
   });
 
-  it('displays value descriptions', () => {
-    render(<ValuesSummary values={mockValues} />);
-    expect(screen.getByText('Striving for excellence')).toBeInTheDocument();
-    expect(screen.getByText('Expressing yourself')).toBeInTheDocument();
+  it('shows correct scores', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ values: mockValues })
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('95%')).toBeInTheDocument();
+      expect(screen.getByText('88%')).toBeInTheDocument();
+    });
   });
 
-  it('shows correct ranking', () => {
-    render(<ValuesSummary values={mockValues} />);
-    expect(screen.getByText('#1')).toBeInTheDocument();
-    expect(screen.getByText('#2')).toBeInTheDocument();
+  it('displays value descriptions', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ values: mockValues })
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Striving for excellence')).toBeInTheDocument();
+      expect(screen.getByText('Expressing yourself')).toBeInTheDocument();
+    });
+  });
+
+  it('shows correct ranking', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ values: mockValues })
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('#1')).toBeInTheDocument();
+      expect(screen.getByText('#2')).toBeInTheDocument();
+    });
+  });
+
+  it('shows error state when fetch fails', async () => {
+    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Failed to fetch'));
+
+    render(
+      <MemoryRouter initialEntries={['/results/test-key']}>
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error: Failed to fetch/)).toBeInTheDocument();
+    });
   });
 }); 

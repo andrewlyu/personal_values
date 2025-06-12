@@ -58,6 +58,24 @@
   color: #666;
 }
 
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #ff3b30;
+  background: #fff;
+  border-radius: 12px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Media query for larger screens */
 @media (min-width: 768px) {
   .values-summary {

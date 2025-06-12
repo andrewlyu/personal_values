@@ -1,41 +1,18 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ValuesSummary from './components/ValuesSummary';
 
 function App() {
-  // Sample data - replace this with actual data from your API
-  const sampleValues = [
-    {
-      name: "Achievement",
-      score: 95,
-      description: "Striving for excellence and accomplishment in all endeavors"
-    },
-    {
-      name: "Creativity",
-      score: 88,
-      description: "Expressing yourself through innovative and original ideas"
-    },
-    {
-      name: "Independence",
-      score: 85,
-      description: "Making decisions and taking actions based on your own judgment"
-    },
-    {
-      name: "Learning",
-      score: 82,
-      description: "Continuously acquiring new knowledge and skills"
-    },
-    {
-      name: "Balance",
-      score: 80,
-      description: "Maintaining harmony between different aspects of life"
-    }
-  ];
-
   return (
-    <div className="App">
-      <ValuesSummary values={sampleValues} />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/results/:resultKey" element={<ValuesSummary />} />
+          <Route path="/" element={<div>Please provide a result key in the URL</div>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
